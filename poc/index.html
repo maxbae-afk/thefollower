@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>THE FOLLOWER — POC</title>
+<link rel="stylesheet" href="../assets/ui/ui.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="backdrop"></div>
+<div id="stage">
+  <div id="scene">
+    <canvas id="world" width="1080" height="1920"></canvas>
+    <div id="ambient"></div>
+    <div id="vignette"></div>
+
+    <div id="phone">
+      <div id="screen">
+        <canvas id="cam"></canvas>
+        <div id="scan"></div>
+        <div id="hud">
+          <div class="hud-l">
+            <b id="live-badge">LIVE</b>
+            <span class="viewers">
+              <svg viewBox="0 0 24 24"><path d="M12 5C6 5 2 12 2 12s4 7 10 7 10-7 10-7-4-7-10-7zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/><circle cx="12" cy="12" r="2"/></svg>
+              <i id="viewers">0</i>
+            </span>
+          </div>
+          <div class="hud-r">
+            <span class="battery"><span class="bat"><i></i></span><i id="battery">78%</i></span>
+            <span class="rec"><i class="dot"></i><i id="rec-time">00:00:00</i></span>
+          </div>
+        </div>
+        <div id="chat"><div id="chat-list"></div></div>
+        <div id="screen-msg"></div>
+        <div id="saved" class="np np-plate"><span>録画保存 · ESCAPED</span></div>
+      </div>
+      <img id="hands" src="../assets/hands/hands.webp" alt="">
+    </div>
+    <div id="tierfx"></div>
+    <div id="tierlight"></div>
+  </div>
+
+  <header id="top">
+    <div class="brand">
+      <img src="../assets/fx/logo.webp" alt="">
+      <div class="brand-t">
+        <b>KURO</b>
+        <span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4.2"/><path d="M3.5 21c.8-4.6 4.2-7 8.5-7s7.7 2.4 8.5 7z"/></svg>1.2M</span>
+      </div>
+    </div>
+    <button id="btn-sound" class="np np-frame" aria-label="sound">
+      <svg class="on" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path class="w" d="M16 8.5a5 5 0 0 1 0 7M18.6 6a8.6 8.6 0 0 1 0 12"/></svg>
+      <svg class="off" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path class="w" d="M16.5 9.5l5 5m0-5l-5 5"/></svg>
+    </button>
+  </header>
+  <div id="history-row"></div>
+  <div id="plate" class="np np-plate"><span id="plate-text">READY</span></div>
+  <div id="mult"><b id="mult-value">1.00x</b></div>
+
+  <button id="history-tab" class="np np-frame"><span>HISTORY</span><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <aside id="history-drawer" class="np np-panel">
+    <h3>HISTORY</h3>
+    <div class="hd-head"><span>ROUND</span><span>CRASH</span><span>YOU</span></div>
+    <ol id="history-list"></ol>
+  </aside>
+
+  <section id="panel" class="np np-panel">
+    <div class="tabs">
+      <button class="tab np np-tab_on sel" data-tab="bet">Betting</button>
+      <button class="tab np np-tab_off" data-tab="auto">Auto</button>
+    </div>
+    <div class="left">
+      <div class="stepper">
+        <button id="minus" class="round" aria-label="minus"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+        <span id="amount">FUN 10.0</span>
+        <button id="plus" class="round" aria-label="plus"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></svg></button>
+      </div>
+      <div class="chips">
+        <button class="chip np np-chip" data-i="0"></button>
+        <button class="chip np np-chip" data-i="1"></button>
+        <button class="chip np np-chip" data-i="2"></button>
+        <button class="chip np np-chip" data-i="3"></button>
+      </div>
+    </div>
+    <button id="bet" class="np np-bet"><b id="bet-main">BET</b><span id="bet-sub">FUN 10.0</span></button>
+  </section>
+  <div id="balance">balance <b id="balance-value">1,000.00</b></div>
+
+  <div id="fx">
+    <div id="flash"></div>
+    <div id="redwash"></div>
+    <div id="blood"></div>
+    <img id="drip" src="../assets/fx/drip.webp" alt="">
+    <div id="stamp"><b id="stamp-main">CRASHED</b><span id="stamp-mult"></span><em id="stamp-sub"></em></div>
+    <div id="blackout"></div>
+  </div>
+  <div id="toast"><b id="toast-main"></b><span id="toast-sub"></span><em id="toast-call">CLOSE CALL!!</em></div>
+  <div id="tier-banner"><b id="tb-lv">LV.1</b><span id="tb-name"></span><span id="tb-pips"><i></i><i></i><i></i></span></div>
+
+  <div id="loader">
+    <img src="../assets/fx/logo.webp" alt="">
+    <h1>THE FOLLOWER</h1>
+    <p class="sub">黒 KURO LIVE · 心霊配信</p>
+    <div class="bar"><i id="load-bar"></i></div>
+    <p id="load-text">LOADING…</p>
+    <button id="start" class="np np-bet" hidden><b>TAP TO START</b><span>音声あり · SOUND ON</span></button>
+  </div>
+
+  <div id="dev" hidden>
+    <b>DEV · next crash</b>
+    <div class="row"><input id="dev-at" type="number" step="0.01" min="1" placeholder="2.50"><button id="dev-set">SET</button><button id="dev-off">OFF</button></div>
+    <div class="row presets"><button data-at="1">1.00</button><button data-at="1.3">1.30</button><button data-at="2">2.00</button><button data-at="5">5.00</button><button data-at="12">12.0</button></div>
+    <label><input id="dev-keep" type="checkbox"> every round</label>
+    <p id="dev-status">OFF</p>
+  </div>
+</div>
+
+<script src="../assets/hands/hands.js"></script>
+<script src="../assets/creatures/onryo/clips.js"></script>
+<script src="../assets/creatures/kaisou/clips.js"></script>
+<script src="../assets/creatures/kanja/clips.js"></script>
+<script src="content.js"></script>
+<script src="game.js"></script>
+</body>
+</html>

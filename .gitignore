@@ -1,0 +1,11 @@
+# build output (tools/build_release.py)
+release/
+
+# local test captures and upload manifests (signed URLs)
+assets/_debug/
+
+__pycache__/
+*.pyc
+Thumbs.db
+desktop.ini
+.DS_Store
