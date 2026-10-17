@@ -84,7 +84,7 @@ with sync_playwright() as p:
 
         if "film" in a.only:
             wait_phase(page, "idle")
-            page.evaluate("cheat.at = 1.8")
+            page.evaluate("cheat.at.v = 1.8")
             page.click("#bet")
             t0 = page.evaluate("performance.now()")
             until(page, "!!game.crashing")
@@ -95,7 +95,7 @@ with sync_playwright() as p:
 
         if "voice" in a.only:
             # three long rounds: watched to the end, escaped at x2.5, watched to the end
-            page.evaluate("Object.assign(cheat, { at: 6, keep: true })")
+            page.evaluate("Object.assign(cheat.at, { v: 6, keep: true })")
             for escape in (False, True, False):
                 wait_phase(page, "idle")
                 time.sleep(4.0)
@@ -105,14 +105,14 @@ with sync_playwright() as p:
                     page.click("#bet")
                 until(page, "!!game.crashing", timeout=40)
             wait_phase(page, "idle")
-            page.evaluate("cheat.keep = false; cheat.at = null")
+            page.evaluate("Object.assign(cheat.at, { v: null, keep: false })")
 
         if "auto" in a.only:
             wait_phase(page, "idle")
             page.click(".tab[data-tab=auto]")
             time.sleep(0.3)
             shot(page, "10_auto_tab")
-            page.evaluate("cheat.at = 3.0")
+            page.evaluate("cheat.at.v = 3.0")
             page.click("#bet")
             time.sleep(0.3)
             shot(page, "11_auto_running")
@@ -139,7 +139,7 @@ with sync_playwright() as p:
             shot(page, "01_ready")
             if page.evaluate("game.phase") != "idle":
                 raise TimeoutError("a round started without a bet")
-            page.evaluate("cheat.at = 3.2")
+            page.evaluate("cheat.at.v = 3.2")
             page.click("#bet")
             time.sleep(2.2)
             shot(page, "02_filming_early")
@@ -158,7 +158,7 @@ with sync_playwright() as p:
             # single player: cashing out ends the round on the spot
             wait_phase(page, "idle")
             time.sleep(0.6)
-            page.evaluate("cheat.at = 5.0")
+            page.evaluate("cheat.at.v = 5.0")
             page.click("#bet")
             until(page, "game.m >= 1.6")
             # watch from inside the page: screenshots are too slow to time this from out here
@@ -201,7 +201,7 @@ with sync_playwright() as p:
                 until(page, "!tier.busy", what="tier switch")
                 time.sleep(1.2)
                 shot(page, f"21_lv{lv}_ready")
-                page.evaluate("cheat.at = 2.6")
+                page.evaluate("cheat.at.v = 2.6")
                 page.click("#bet")
                 time.sleep(2.2)
                 shot(page, f"22_lv{lv}_filming")

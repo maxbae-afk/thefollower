@@ -17,7 +17,9 @@ ascii_set = string.printable + "·…—−×→✓●■"
 all_chars = "".join(sorted(set(text) | set(ascii_set)))
 
 FONTS = [
-    ("ShipporiMinchoB1-Bold.ttf", "shippori-b1-bold.woff2", all_chars),
+    ("MetalMania-Regular.ttf", "metal-mania.woff2", all_chars),
+    ("Oswald-VariableFont_wght.ttf", "oswald.woff2", all_chars),
+    ("ReggaeOne-Regular.ttf", "reggae-one.woff2", all_chars),
     ("ShipporiMinchoB1-ExtraBold.ttf", "shippori-b1-xbold.woff2", all_chars),
     ("DelaGothicOne-Regular.ttf", "dela-gothic-one.woff2", ascii_set),
     ("ZenKakuGothicNew-Medium.ttf", "zen-kaku-medium.woff2", all_chars),

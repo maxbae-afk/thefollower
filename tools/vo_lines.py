@@ -66,6 +66,20 @@ LINES = {
     'climb_1': '[excited, nervous] よっしゃ、場所変えるぞ。もっとヤバいとこ行ってみよう。',
     'climb_2': '[uneasy but hyped] …マジで行く？ここ、ガチなとこだぞ…',
     'retreat_1': '[relieved laugh] …ちょっと戻るわ。さすがにあそこは無理。',
+    # chat throws a koban in (a spin of the 除霊 bonus)
+    'koban_1': '[surprised, delighted] おっ、小判きた！ありがと！',
+    'koban_2': '[excited, nervous laugh] また小判！？お祓い代かよ、これ…',
+    'koban_3': '[hushed, hyped] 小判…！よし、まだいける…',
+    # the 除霊 bonus, after the escape
+    'bonus_1': '[out of breath, fired up] よし…みんなの小判で、こいつはらってやる！',
+    'bonus_2': '[hyped, shouting] 除霊タイムだ！いっけえ！',
+    'hit_1': '[excited] 効いてる効いてる！',
+    'hit_2': '[shouting, hyped] うおっ、でかいの入った！',
+    'hit_3': '[fired up] いけいけいけ！',
+    'exorcise_1': '[ecstatic, shouting] 除霊成功ーっ！！',
+    'exorcise_2': '[stunned, then overjoyed] 消えた…マジではらえた！やったぁ！',
+    'fail_1': '[frustrated, out of breath] くそっ、しぶといな…',
+    'fail_2': '[disappointed, laughing it off] あとちょっとだったのに…次ははらう。',
 }
 
 # audition takes already recorded with this voice (assets/src/voice_takes/C_miles/)

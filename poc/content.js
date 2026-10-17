@@ -25,10 +25,11 @@ window.CONTENT = {
       name: '夜の森',
       bg: '../assets/locations/mori/bg.webp',
       backdrop: '../assets/locations/mori/backdrop.webp',
+      backdropLight: 1.4,           // this backdrop is darker than the others: brought up to their level
       floorY: 1150,
       aim: [540, 1010],
-      creatureTint: ['rgba(10, 34, 40, 0.42)', 'rgba(0, 8, 10, 0.66)'],
-      shadow: 0.6,
+      creatureTint: ['rgba(10, 34, 40, 0.3)', 'rgba(0, 8, 10, 0.52)'],
+      shadow: 0.55,
       light: { color: [80, 255, 170], amt: 0.07, period: 7 },
       voice: { open: ['open_4'], early: ['early_6'] },
       chat: {
@@ -78,6 +79,7 @@ window.CONTENT = {
       dir: '../assets/creatures/kaisou/',
       floorSrc: 1530,
       scale: 0.4,
+      lift: 1.3,                    // black robe on a dark forest: frames drawn brighter so it reads
       idle: 'idle',
       tense: [
         { clip: 'tense_twist', weight: 0.5, sfx: ['crack', 'sting'], sfxAt: [0.2, 0.28], line: 'face' },
@@ -125,6 +127,21 @@ window.CONTENT = {
       fear: { fakeGap: 0.66, glitchGap: 0.55, tremble: 1.45, heart: 16, stage: 0.7, dark: 0.26 } },
   ],
 
+  // the 除霊 bonus after an escape (odds and pays live in slot.js): every koban chat threw in is one spin
+  slot: {
+    symbols: {
+      onibi: { name: '鬼火', img: '../assets/slot/onibi.webp' },
+      shio: { name: '清め塩', img: '../assets/gifts/shio.webp' },
+      omamori: { name: 'お守り', img: '../assets/gifts/omamori.webp' },
+      juzu: { name: '数珠', img: '../assets/gifts/juzu.webp' },
+      ofuda: { name: '御札', img: '../assets/gifts/ofuda.webp' },
+      koban: { name: '小判', img: '../assets/gifts/koban.webp' },
+    },
+    seal: '../assets/slot/seal.webp',
+    hpFrame: '../assets/slot/hp_frame.webp',
+    stages: ['壱', '弐', '参', '肆', '伍'],
+  },
+
   // the streamer holding the phone (assets/audio/vo/<key>.mp3, script in tools/vo_lines.py); never subtitled
   voice: {
     dir: '../assets/audio/vo/',
@@ -146,6 +163,11 @@ window.CONTENT = {
       close: ['close_1', 'close_2'],
       climb: ['climb_1', 'climb_2'],
       retreat: ['retreat_1'],
+      koban: ['koban_1', 'koban_2', 'koban_3'],
+      bonus: ['bonus_1', 'bonus_2'],
+      hit: ['hit_1', 'hit_2', 'hit_3'],
+      exorcise: ['exorcise_1', 'exorcise_2'],
+      fail: ['fail_1', 'fail_2'],
     },
   },
 
@@ -191,5 +213,12 @@ window.CONTENT = {
       'これで逃げて', 'もっと近くで!!', '神回!!', '生きて帰れ', '応援してる', 'ガチで本物?', '続けて!!',
       'ボーナス', '伝説を見せて', 'お守り代', 'もう一歩!', '震えた', '投げとく', 'チャンネル登録した',
     ],
+    // a koban lands each time the multiplier passes a milestone: one more spin of the 除霊 bonus
+    koban: [
+      'お祓い代!', '小判投げとく', 'これで祓って!!', '除霊たのむ', '成仏させてやって', 'お布施です', '祓え祓え!',
+      '小判どうぞ', 'あとで除霊な', '御祓い資金', '小判で殴れ', '供養代', '除霊ガチャ回して', '小判追加!!',
+    ],
+    // getting out between two milestones, chat sometimes throws the next koban anyway on the way out
+    lastKoban: ['逃げる前にこれ!!', '最後に小判!', '持ってけ!!', '帰り道の除霊代', 'おまけの小判', 'ラスト投げ銭!'],
   },
 };

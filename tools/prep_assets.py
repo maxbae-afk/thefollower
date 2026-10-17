@@ -5,6 +5,7 @@ Outputs (relative to THE FOLLOWER/assets):
   creatures/onryo/{crouch,stand,lunge}.webp
   hands/hands.webp + hands/hands.js     (screen hole rect for the phone canvas)
   chat/avatars.webp (4x4 sheet), chat/banknote.webp
+  gifts/<id>.webp                        (from src/gifts/<id>.png, generated with a transparent background)
   fx/logo.webp, fx/blood_0..5.webp, fx/drip.webp
   ui/*.webp + ui/ui.css                  (9-patch border-image rules)
   _debug/ui_slices.png                   (slice guides for review)
@@ -107,6 +108,13 @@ def chat():
     save_webp(fit_width(note, 256), OUT / "chat" / "banknote.webp", 90)
 
 
+def gifts():
+    for src in sorted((SRC / "gifts").glob("*.png")):
+        im = Image.open(src).convert("RGBA")
+        im = im.crop(alpha_bbox(im, pad=4))
+        save_webp(fit_max(im, 256), OUT / "gifts" / f"{src.stem}.webp", 90)
+
+
 def fx():
     logo = keyed_rgba(Image.open(SRC / "logo.png"))
     logo = logo.crop(alpha_bbox(logo, pad=4))
@@ -207,7 +215,7 @@ def ui():
     print("  _debug/ui_slices.png")
 
 
-STEPS = {"bg": bg, "creature": creature, "hands": hands, "chat": chat, "fx": fx, "ui": ui}
+STEPS = {"bg": bg, "creature": creature, "hands": hands, "chat": chat, "gifts": gifts, "fx": fx, "ui": ui}
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()

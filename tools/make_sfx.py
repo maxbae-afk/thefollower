@@ -408,6 +408,155 @@ def bet():
     return trim(reverb(y, 0.7, 0.18))
 
 
+# ---------- 除霊 bonus ----------
+def koban():
+    d = 1.0
+    y = np.zeros(n(d))
+    for at, g in ((0.0, 1.0), (0.07, 0.55), (0.12, 0.3)):
+        place(y, resonant_hit(0.35, [2637, 3951, 5274, 7040], q=40, rate=14) * g, at)
+    place(y, fm_bell(2093, 0.8, index=1.2, ratio=3.0, rate=5) * 0.35, 0.02)
+    t = tt(0.5)
+    place(y, bp(noise(0.5), 8000, 14000) * np.exp(-t * 12) * 0.15, 0.0)
+    return trim(reverb(y, 0.9, 0.22, tone=9000))
+
+
+def reel_spin():
+    d = 0.5
+    t = tt(d)
+    y = bp(noise(d), 500, 3000) * np.sin(np.pi * np.clip(t / d, 0, 1)) ** 1.5 * 0.45
+    at = 0.0
+    while at < d - 0.03:
+        place(y, resonant_hit(0.03, [1800, 3100], q=14, rate=160) * 0.3, at)
+        at += 0.022 + 0.03 * (at / d)
+    return trim(reverb(y, 0.5, 0.12))
+
+
+def reel_stop():
+    d = 0.3
+    y = np.zeros(n(d))
+    place(y, resonant_hit(0.22, [880, 2090, 3270], q=18, rate=55), 0.0)
+    place(y, thump(180, 115, 0.1, 50, click=0.6) * 0.7, 0.0)
+    return trim(reverb(y, 0.4, 0.12))
+
+
+def win_s():
+    d = 1.0
+    y = np.zeros(n(d))
+    for i, f in enumerate((2637, 3136, 3520, 3136, 3951)):
+        place(y, fm_bell(f * 2 ** (rng.uniform(-8, 8) / 1200), 0.6, index=1.6, ratio=2.4, rate=7) * 0.32, i * 0.045 + rng.uniform(0, 0.012))
+    t = tt(0.6)
+    place(y, bp(noise(0.6), 6000, 12000) * (0.5 + 0.5 * np.sin(2 * np.pi * 31 * t)) * np.exp(-t * 6) * 0.2, 0.0)
+    return trim(reverb(y, 1.1, 0.25, tone=9000))
+
+
+def win_big():
+    d = 2.0
+    y = np.zeros(n(d))
+    place(y, thump(88, 44, 1.4, 3.6, click=0.7) * 1.2, 0.0)
+    place(y, lp(noise(0.3), 500) * expdec(0.3, 14) * 0.5, 0.0)
+    for i, f in enumerate((1046.5, 1318.5, 1568.0, 2093.0, 2637.0)):
+        place(y, fm_bell(f, 1.5, index=2.2, ratio=2.0, rate=3.2) * 0.26, 0.04 + i * 0.06)
+    place(y, win_s() * 0.6, 0.3)
+    return trim(reverb(y, 1.8, 0.3, tone=8000))
+
+
+def hit():
+    """a talisman slaps into the ghost: paper whip, a holy zap, the thing hisses"""
+    d = 0.7
+    t = tt(d)
+    y = np.zeros(len(t))
+    sw = 0.12
+    st = tt(sw)
+    whip = bp(noise(sw), 1200, 6000) * np.sin(np.pi * st / sw) ** 2 * 0.6
+    place(y, whip, 0.0)
+    zd = 0.28
+    zt = tt(zd)
+    zap = saw(2200 * np.exp(-zt * 9) + 260) * np.exp(-zt * 11) * 0.35
+    place(y, bp(zap, 300, 7000), 0.09)
+    place(y, thump(130, 70, 0.3, 16, click=0.8) * 0.9, 0.1)
+    hd = 0.5
+    ht = tt(hd)
+    place(y, hp(noise(hd), 4000) * np.exp(-ht * 7) * 0.22, 0.12)
+    return trim(reverb(drive(y * 1.3, 1.6), 0.8, 0.2))
+
+
+def exorcise():
+    """the light builds, the drum lands, the ghost burns away screaming into nothing"""
+    d = 3.4
+    y = np.zeros(n(d))
+    bd = 1.0
+    bt = tt(bd)
+    build = bp(noise(bd), 800, 9000) * (bt / bd) ** 2 * 0.35
+    for f in (1046.5, 1568.0, 2093.0):
+        build += np.sin(2 * np.pi * f * bt * (1 + 0.04 * bt)) * (bt / bd) ** 3 * 0.08
+    place(y, build, 0.0)
+    place(y, thump(70, 30, 2.2, 2.2, click=1.0) * 1.4, bd)
+    place(y, impact() * 0.5, bd)
+    for i, f in enumerate((523.3, 659.3, 784.0, 1046.5, 1318.5)):
+        place(y, fm_bell(f, 2.3, index=2.6, ratio=2.76, rate=1.6) * 0.22, bd + 0.02 + i * 0.03)
+    wd = 1.8
+    wt = tt(wd)
+    f = 980 * np.exp(-wt * 1.6) + 140
+    src = saw(f) + 0.6 * saw(f * 1.5)
+    wail = (peak(src, 900, 6) + 0.8 * peak(src, 2200, 7)) * np.exp(-wt * 2.2) * attack(wd, 0.04) * 0.14
+    place(y, drive(wail, 1.6), bd + 0.05)
+    for at in (bd + 0.1, bd + 0.35, bd + 0.7):
+        place(y, crack() * 0.4, at)
+    return trim(reverb(y, 2.6, 0.32, tone=7000))
+
+
+def stamp():
+    d = 0.5
+    y = np.zeros(n(d))
+    place(y, thump(115, 60, 0.35, 12, click=1.0) * 1.1, 0.0)
+    place(y, bp(noise(0.12), 400, 3000) * expdec(0.12, 40) * 0.5, 0.0)
+    return trim(reverb(y, 0.6, 0.15))
+
+
+def bonus_in():
+    """a temple rin struck once, the room swelling under it"""
+    d = 3.0
+    y = np.zeros(n(d))
+    place(y, fm_bell(740, 3.0, index=1.4, ratio=2.76, rate=1.1) * 0.5, 0.0)
+    place(y, fm_bell(1110, 2.4, index=1.0, ratio=2.76, rate=1.6) * 0.22, 0.0)
+    t = tt(d)
+    swell = np.sin(2 * np.pi * 55 * t) * np.sin(np.pi * np.clip(t / d, 0, 1)) * 0.25
+    y += swell
+    place(y, thump(80, 46, 1.0, 4, click=0.4) * 0.7, 0.0)
+    return trim(reverb(y, 2.4, 0.3))
+
+
+def bonus_loop():
+    """taiko under the bonus: 4 bars at 120 bpm, the last one a roll"""
+    beat = 0.5
+    d, xf = 16 * beat, 1.0
+    y = np.zeros(n(d + xf))
+
+    def don(g):
+        body = thump(92, 52, 0.7, 5.5, click=0.45)
+        place(body, lp(noise(0.12), 420) * expdec(0.12, 30) * 0.4, 0.0)
+        return body * g
+
+    def ka(g):
+        return resonant_hit(0.09, [1180, 2470], q=9, rate=70) * g
+
+    for bar in range(4):
+        b0 = bar * 4 * beat
+        hits = [(0, don, 1.0), (1.5, don, 0.6), (2, don, 0.85), (3, ka, 0.5), (3.5, ka, 0.4)]
+        if bar == 3:
+            hits = [(0, don, 1.0), (1.5, don, 0.6), (2, don, 0.85), (2.5, ka, 0.4), (3, don, 0.7), (3.25, don, 0.55), (3.5, don, 0.75), (3.75, don, 0.9)]
+        for at, fn, g in hits:
+            place(y, fn(g), b0 + at * beat)
+    t = tt(d + xf)
+    y += np.sin(2 * np.pi * 41.2 * t) * (0.18 + 0.06 * np.sin(2 * np.pi * t / d)) + saw(np.full(len(t), 82.4)) * 0.02
+    shaker = np.zeros(len(t))
+    for k in range(int((d + xf) / (beat / 2))):
+        place(shaker, hp(noise(0.05), 6000) * expdec(0.05, 70) * (0.12 if k % 2 else 0.06), k * beat / 2)
+    y += shaker
+    y = reverb(y, 1.4, 0.2)[: len(t)]
+    return loopify(y, xf)
+
+
 def drone_loop():
     d, xf = 16.0, 3.0
     total = d + xf
@@ -493,11 +642,21 @@ ONESHOTS = {
     "click": click,
     "tick": tick,
     "bet": bet,
+    "koban": koban,
+    "reel_spin": reel_spin,
+    "reel_stop": reel_stop,
+    "win_s": win_s,
+    "win_big": win_big,
+    "hit": hit,
+    "exorcise": exorcise,
+    "stamp": stamp,
+    "bonus_in": bonus_in,
 }
 LOOPS = {
     "drone_loop": (drone_loop, -20),
     "tension_loop": (tension_loop, -22),
     "breath_loop": (breath_loop, -24),
+    "bonus_loop": (bonus_loop, -21),
 }
 
 
